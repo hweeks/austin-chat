@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BeautifulText, SexyContainer } from "./styles";
 
 const req = async () => {
-  const in_flight = await fetch("/api/a-joke");
+  const in_flight = await fetch("/api/joke/get");
   const output = await in_flight.json();
   return output.joke;
 };

@@ -8,6 +8,7 @@ import { connect_to_db, stop_db } from "./db";
 import { UserRouter } from "./routes/user";
 import { joke_router } from "./routes/jokes";
 
+// this cerates the express application itself
 const your_entire_application = express();
 
 const setup_the_environment_for_the_app = async () => {
