@@ -1,0 +1,27 @@
+{
+  "name": "todd-chat-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "workspaces": [
+    "app",
+    "server"
+  ],
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "@yarnpkg/pnpify": "^3.1.1",
+    "eslint": "^8.9.0",
+    "eslint-plugin-react": "latest",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "dev": "yarn workspaces foreach -piv run dev",
+    "beauty": "yarn workspaces foreach -piv run beauty",
+    "am-i-pretty": "yarn workspaces foreach -piv run am-i-pretty",
+    "lint": "yarn workspaces foreach -piv run lint",
+    "fix-lint": "yarn workspaces foreach -piv run fix-lint",
+    "ci": "yarn am-i-pretty && yarn lint"
+  }
+}

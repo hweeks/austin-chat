@@ -1,0 +1,31 @@
+{
+  "name": "app",
+  "packageManager": "yarn@3.2.0",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "dev": "webpack-dev-server",
+    "lint": "eslint --ext=ts,tsx .",
+    "fix-lint": "eslint --fix --ext=ts,tsx .",
+    "beauty": "prettier -w .",
+    "am-i-pretty": "prettier -c ."
+  },
+  "dependencies": {
+    "immer": "^9.0.12",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.14.23",
+    "esbuild-loader": "^2.18.0",
+    "esbuild-register": "^3.3.2",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  }
+}
