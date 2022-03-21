@@ -7,5 +7,5 @@ const home_node = document.getElementById("home");
 
 // we gotta fetch the joke from the back end instead next!
 window.onload = () => {
-  ReactDOM.render(<HomePage joke="knock knock" />, home_node);
+  ReactDOM.render(<HomePage joke="derp" />, home_node);
 };
