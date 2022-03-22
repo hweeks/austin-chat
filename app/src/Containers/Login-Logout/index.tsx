@@ -5,10 +5,12 @@ import { useState } from "react"
 const LoginOut = (props: any) => {
   const [isLoggedIn,setLogged] = useState(false)
   return(
-    <LoginOutButton onClick={() => {
-      setLogged(!isLoggedIn) 
-      props.showForm()
-    }}>{isLoggedIn ? "Log Out" : "Log In"}</LoginOutButton>
+    <>
+      {!props.formShown && <LoginOutButton onClick={() => {
+        setLogged(!isLoggedIn) 
+        props.showForm()
+      }}>{isLoggedIn ? "Log Out" : "Log In"}</LoginOutButton>}
+    </>
   )
 }
 

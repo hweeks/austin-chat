@@ -10,8 +10,8 @@ const Header = () => {
 
   return(
     <HeaderWrapper>
-      <LoginOut showForm={() => setShowForm(!showForm)}/>
-      {showForm && <UserForm/>}
+      <LoginOut formShown={showForm} showForm={() => setShowForm(!showForm)}/>
+      {showForm && <UserForm showForm={() => setShowForm(!showForm)}/>}
     </HeaderWrapper>
   )
 }
