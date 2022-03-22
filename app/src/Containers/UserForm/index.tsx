@@ -10,6 +10,7 @@ const UserForm = (props: any) => {
       <input placeholder="Email"/>
       <input placeholder="Password"/>
       {newAccount && <input placeholder="Re-Enter Password"/>}
+      <button type="button" onClick={props.showForm}>Create</button>
       <button type="button" onClick={props.showForm}>Back</button>
       <button type="button" onClick={() => setNewAccount(!newAccount)}>{newAccount ? "Already Have an Account?" : "New User?"}</button>
     </UserFormWrapper>
