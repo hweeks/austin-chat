@@ -12,13 +12,12 @@ const reqJoke = async () => {
 export const HomePage = ({ joke }: { joke: string }) => {
   const is_joke_funny = joke === "penis";
   const [joke_remote, set_joke] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false)
 
   if (joke_remote === "") reqJoke().then((res) => set_joke(res));
   return (
     <SexyContainer>
       <Header/>
-      {loggedIn && <JokeForm/>}
+      <JokeForm/>
       {!is_joke_funny && <BeautifulText>{joke_remote}</BeautifulText>}
       {is_joke_funny && <BeautifulText>grow up</BeautifulText>}
     </SexyContainer>

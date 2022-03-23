@@ -1,11 +1,12 @@
 import React from "react"
+import { JokeInput, JokeWrapper } from "./styles"
 
 const JokeForm = () => {
   return(
-    <div>
-      <input type="text" placeholder={`Put your "Original" joke here.`}/>
+    <JokeWrapper>
+      <JokeInput rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
       <button>Submit Joke</button>
-    </div>
+    </JokeWrapper>
   )
 }
 
