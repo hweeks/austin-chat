@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { useState } from "react/cjs/react.development";
+import React, { useRef, useState } from "react";
+import { passwordValidation } from "../../Helpers/password-validation";
 import { UserFormWrapper } from "./styles";
 
 interface user {
@@ -15,24 +15,33 @@ const UserForm = (props: any) => {
   const passwordCheckInput = useRef()
   const [errorMessage,setError] = useState('')
 
+  const reqUserCreate = async (newUser: object) => {
+    const in_flight = await fetch("/api/user/create", {
+      method: 'POST',
+      body: JSON.stringify(newUser),
+      headers: {
+        'Content-Type': "application/json"
+      }
+    });
+    const output = await in_flight.json();
+    return output.joke === undefined ? output.message : output.joke
+  };
+
   const handleSubmit = (event: any) => {
     event.preventDefault()
     const password = passwordInput.current?.value
     const passwordCheck = passwordCheckInput.current?.value
     const username = usernameInput.current?.value
-    passwordValidated(password,passwordCheck)
-
-    
-  }
-
-  const passwordValidated = (password: string, password2: string) => {
-    let isValid = false
-    const regex = "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-    if(password === password2){
-      
+    const passChecked = passwordValidation(password,passwordCheck)
+    if(passChecked.isValid && passwordCheck){
+      const newUser = {
+        username,
+        password
+      }
+      reqUserCreate(newUser)
     }
-    else{
-      setError("Passwords Must Match")
+    else if(passChecked.errors){
+      console.log(passChecked.errors)
     }
   }
 

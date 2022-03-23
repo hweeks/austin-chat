@@ -50,6 +50,7 @@ export const createUser = async (
     const token = await createToken(builtUser?.id || "", builtUser.id);
     // this cookie being set is how we will check on later requests
     // are actually authenticated!
+    console.log("user created")
     res.cookie("token", token, { signed: true });
     res.send({ token });
   } catch (error) {
