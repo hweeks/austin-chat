@@ -27,22 +27,26 @@ const UserForm = (props: any) => {
     return output.joke === undefined ? output.message : output.joke
   };
 
+  const handleCreate = (userInfo: user, passwordCheck: string) => {
+    const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
+    if(checkForErrors.length <= 0){
+      reqUserCreate(userInfo).then(res => console.log(res))
+    }
+    else if(checkForErrors){
+      setError(`The password ${checkForErrors.join(" & ")}.`)
+    }
+  }
+
   const handleSubmit = (event: any) => {
     event.preventDefault()
     const password = passwordInput.current?.value
     const passwordCheck = passwordCheckInput.current?.value
     const username = usernameInput.current?.value
-    const passChecked = passwordValidation(password,passwordCheck)
-    if(passChecked.isValid && passwordCheck){
-      const newUser = {
-        username,
-        password
-      }
-      reqUserCreate(newUser)
+    const userInfo : user = {
+      username,
+      password
     }
-    else if(passChecked.errors){
-      console.log(passChecked.errors)
-    }
+    if(newAccount) handleCreate(userInfo,passwordCheck)
   }
 
   return (

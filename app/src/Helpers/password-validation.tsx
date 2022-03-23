@@ -1,38 +1,33 @@
 const errors = []
 
-const passwordIsGirthy = (password: string) => {
-  let isValid : boolean = false
-  if(password.length >= 8){
-    isValid = true
+const passwordIsGirthy = (password: string, password2?: string) => {
+  if(password.length < 8){
+    errors.push("isnt girthy enough")
   }
-  if(!isValid) errors.push("isn't girthy enough")
-  return isValid
 }
 
-const passwordIsntTooGirthy = (password: string) => {
-  let isValid : boolean = false
-  if(password.length <= 16){
-    isValid = true
+const passwordIsntTooGirthy = (password: string, password2?: string) => {
+  if(password.length > 16){
+    errors.push("is too girthy")
   }
-  if(!isValid) errors.push("is too girthy")
-  return isValid
 }
 
-const passwordHasNumbers = (password: string) => {
-  let isValid : boolean = false
-  if(password.split("").some(((x: any) => !isNaN(x)))){
-    isValid = true
+const passwordHasNumbers = (password: string, password2?: string) => {
+  if(!password.split("").some(((x: any) => !isNaN(x)))){
+    errors.push("needs numbers")
   }
-  if(!isValid) errors.push("needs numbers")
-  return isValid
 }
 
-const functionArray = [passwordIsGirthy,passwordIsntTooGirthy,passwordHasNumbers]
+const passwordsMatch = (password: string, password2: string) => {
+  if(password !== password2){
+    errors.push('does not match')
+  }
+}
+
+const functionArray = [passwordIsGirthy,passwordIsntTooGirthy,passwordHasNumbers,passwordsMatch]
 
 export const passwordValidation = (password: string, password2: string) => {
-  if(password === password2)
-  return {
-    errors: errors,
-    isValid: functionArray.every((func) => func(password))
-  }
+  errors.splice(0,errors.length)
+  functionArray.forEach((func) => func(password,password2))
+  return errors
 }
