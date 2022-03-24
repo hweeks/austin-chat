@@ -7,6 +7,18 @@ interface user {
   password: string,
 }
 
+const reqUserCreate = async (newUser: object) => {
+  const in_flight = await fetch("/api/user/create", {
+    method: 'POST',
+    body: JSON.stringify(newUser),
+    headers: {
+      'Content-Type': "application/json"
+    }
+  });
+  const output = await in_flight.json();
+  return output
+}
+
 const UserForm = (props: any) => {
   
   const [newAccount, setNewAccount] = useState(false)
@@ -15,22 +27,12 @@ const UserForm = (props: any) => {
   const passwordCheckInput = useRef()
   const [errorMessage,setError] = useState('')
 
-  const reqUserCreate = async (newUser: object) => {
-    const in_flight = await fetch("/api/user/create", {
-      method: 'POST',
-      body: JSON.stringify(newUser),
-      headers: {
-        'Content-Type': "application/json"
-      }
-    });
-    const output = await in_flight.json();
-    return output.joke === undefined ? output.message : output.joke
-  };
-
   const handleCreate = (userInfo: user, passwordCheck: string) => {
     const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
     if(checkForErrors.length <= 0){
-      reqUserCreate(userInfo).then(res => console.log(res))
+      reqUserCreate(userInfo).then(res => {
+        return res
+      })
     }
     else if(checkForErrors){
       setError(`The password ${checkForErrors.join(" & ")}.`)
