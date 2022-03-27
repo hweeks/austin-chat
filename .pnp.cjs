@@ -2295,7 +2295,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ],\
       [\
         "qs",\
-        "npm:6.9.7"\
+        "npm:6.10.3"\
       ],\
       [\
         "queue-microtask",\
@@ -4610,6 +4610,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["esbuild-register", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:3.3.2"],\
             ["html-webpack-plugin", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:5.5.0"],\
             ["immer", "npm:9.0.12"],\
+            ["qs", "npm:6.10.3"],\
             ["react", "npm:17.0.2"],\
             ["react-dom", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:17.0.2"],\
             ["react-is", "npm:17.0.2"],\
@@ -9851,6 +9852,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["qs", [\
+        ["npm:6.10.3", {\
+          "packageLocation": "./.yarn/cache/qs-npm-6.10.3-172e1a3fb7-0fac5e6c71.zip/node_modules/qs/",\
+          "packageDependencies": [\
+            ["qs", "npm:6.10.3"],\
+            ["side-channel", "npm:1.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:6.9.7", {\
           "packageLocation": "./.yarn/cache/qs-npm-6.9.7-3f3fa3ac7b-5bbd263332.zip/node_modules/qs/",\
           "packageDependencies": [\

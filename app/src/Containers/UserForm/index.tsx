@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import { passwordValidation } from "../../Helpers/password-validation";
 import { UserFormWrapper } from "./styles";
+import qs from "qs"
 
 interface user {
   username: string,
   password: string,
 }
 
-const reqUserCreate = async (newUser: object) => {
+const reqUserCreate = async (newUser: user) => {
   const in_flight = await fetch("/api/user/create", {
     method: 'POST',
     body: JSON.stringify(newUser),
@@ -17,6 +18,28 @@ const reqUserCreate = async (newUser: object) => {
   });
   const output = await in_flight.json();
   return output
+}
+
+const reqLogin = async (user: user) => {
+  const in_flight = await fetch('/api/user/login', {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+      'Content-type': 'application/json'
+    }
+  })
+  const output = await in_flight.json();
+  return output
+}
+
+const creationErrorHandler = (res: any) => {
+  if(res.code === 11000){
+    alert("That username is already in use.")
+    return false
+  }
+}
+
+const loginErrorHandler = (res: any) => {
 }
 
 const UserForm = (props: any) => {
@@ -31,12 +54,19 @@ const UserForm = (props: any) => {
     const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
     if(checkForErrors.length <= 0){
       reqUserCreate(userInfo).then(res => {
-        return res
+        if(res.code) creationErrorHandler(res)
+        else if(qs.parse(document.cookie)["object Object"]) window.location.replace("http://localhost:3000/")
       })
     }
     else if(checkForErrors){
       setError(`The password ${checkForErrors.join(" & ")}.`)
     }
+  }
+
+  const handleLogin = (userInfo: user) => {
+    reqLogin(userInfo).then(res => {
+      if(res.code) loginErrorHandler(res)
+    })
   }
 
   const handleSubmit = (event: any) => {
@@ -49,6 +79,7 @@ const UserForm = (props: any) => {
       password
     }
     if(newAccount) handleCreate(userInfo,passwordCheck)
+    else handleLogin(userInfo)
   }
 
   return (
