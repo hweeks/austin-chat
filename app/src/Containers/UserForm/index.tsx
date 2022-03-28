@@ -28,6 +28,7 @@ const reqLogin = async (user: user) => {
       'Content-type': 'application/json'
     }
   })
+  console.log(in_flight)
   const output = await in_flight.json();
   return output
 }
@@ -40,6 +41,7 @@ const creationErrorHandler = (res: any) => {
 }
 
 const loginErrorHandler = (res: any) => {
+  //needing assistance here
 }
 
 const UserForm = (props: any) => {
@@ -65,7 +67,7 @@ const UserForm = (props: any) => {
 
   const handleLogin = (userInfo: user) => {
     reqLogin(userInfo).then(res => {
-      if(res.code) loginErrorHandler(res)
+      if(!res.token) loginErrorHandler(res)
     })
   }
 
