@@ -32,7 +32,7 @@ export const userLogin = async (
     // send back the token incase we wanna do something else with it!
     res.send({ token });
   } catch (error) {
-    next(error);
+    next(error)
   }
 };
 
@@ -53,7 +53,7 @@ export const createUser = async (
     res.cookie("token", token, { signed: true });
     res.send({ token });
   } catch (error) {
-    next(error);
+    next(error)
   }
 };
 

@@ -28,7 +28,7 @@ const reqLogin = async (user: user) => {
       'Content-type': 'application/json'
     }
   })
-  const output = await in_flight.json();
+  const output = await in_flight.json()
   return output
 }
 
@@ -40,6 +40,7 @@ const creationErrorHandler = (res: any) => {
 }
 
 const loginErrorHandler = (res: any) => {
+  alert(res)
 }
 
 const UserForm = (props: any) => {
@@ -54,8 +55,12 @@ const UserForm = (props: any) => {
     const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
     if(checkForErrors.length <= 0){
       reqUserCreate(userInfo).then(res => {
-        if(res.code) creationErrorHandler(res)
-        else if(qs.parse(document.cookie)["object Object"]) window.location.replace("http://localhost:3000/")
+        if(!res.token) creationErrorHandler(res)
+        else {
+          props.showForm()
+          props.setToken(qs.parse(document.cookie).token)
+        }
+        
       })
     }
     else if(checkForErrors){
@@ -65,7 +70,11 @@ const UserForm = (props: any) => {
 
   const handleLogin = (userInfo: user) => {
     reqLogin(userInfo).then(res => {
-      if(res.code) loginErrorHandler(res)
+      if(!res.token) loginErrorHandler(res)
+      else {
+        props.showForm()
+        props.setToken(qs.parse(document.cookie).token)
+      }
     })
   }
 
@@ -88,7 +97,11 @@ const UserForm = (props: any) => {
       <input ref={usernameInput} placeholder="Username" required/>
       Password
       <input ref={passwordInput} type="password" placeholder="Password" required/>
-      {newAccount &&  <> Re-Enter Password<input ref={passwordCheckInput}  placeholder="Re-Enter Password" required/></>}
+      {newAccount &&  
+        <>
+          Re-Enter Password
+          <input ref={passwordCheckInput}  placeholder="Re-Enter Password" required/>
+        </>}
       <div>
       <label>{errorMessage}</label>
       </div>

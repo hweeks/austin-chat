@@ -13,12 +13,12 @@ const reqJoke = async () => {
 export const HomePage = ({ joke }: { joke: string }) => {
   const is_joke_funny = joke === "penis";
   const [joke_remote, set_joke] = useState("");
-  const [token, setToken] = useState(qs.parse(document.cookie)['object Object'])
+  const [token, setToken] = useState(qs.parse(document.cookie).token)
   if (joke_remote === "") reqJoke().then((res) => set_joke(res));
 
   return (
     <SexyContainer>
-      <Header/>
+      <Header setToken={setToken} token={token}/>
       {token && <JokeForm/>}
       {!is_joke_funny && <BeautifulText>{joke_remote}</BeautifulText>}
       {is_joke_funny && <BeautifulText>grow up</BeautifulText>}
