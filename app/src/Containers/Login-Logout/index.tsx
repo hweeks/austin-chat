@@ -16,19 +16,18 @@ const deleteAllCookies = () => {
 
 
 const LoginOut = (props: any) => {
-  const [token, setToken] = useState(qs.parse(document.cookie)['object Object'])
   
   const handleButton = () => {
-    if(token) {
+    if(props.token) {
       deleteAllCookies()
-      setToken(qs.parse(document.cookie)['object Object'])
+      props.setToken('')
     }
     else props.showForm() 
   }
 
   return(
     <>
-      {!props.formShown && <LoginOutButton onClick={() => {handleButton()}}>{token ? "Log Out" : "Log In"}</LoginOutButton>}
+      {!props.formShown && <LoginOutButton onClick={() => {handleButton()}}>{props.token ? "Log Out" : "Log In"}</LoginOutButton>}
     </>
   )
 }
