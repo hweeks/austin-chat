@@ -5,12 +5,13 @@ import { User, authenticate } from "../models/user";
 const router = Router();
 
 // using tokens to store info!
-export const createToken = async (password: string, user_id: string) =>
-  jws.sign({
+export const createToken = async (password: string, user_id: string) => {
+  return jws.sign({
     header: { alg: "HS256" },
     payload: { password, user_id },
     secret: process.env.JWT_SECRET || "come_up_with_a_secret_string",
   });
+}
 
 export const decodeToken = (token: string) => {
   return jws.decode(token);
