@@ -11,13 +11,12 @@ export const add_a_joke = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("attempted")
   const { token } = req.signedCookies;
   if (!token) next(new Error("no token no jokin"));
-  console.log(req.body)
   const { new_joke } = req.body;
   const token_decode = JSON.parse(decodeToken(token).payload)
   const found_author = token_decode.user_id;
+  console.log(token_decode)
   try {
     await joke_model.create({ author: found_author, joke: new_joke });
     res.send({ complete: true });

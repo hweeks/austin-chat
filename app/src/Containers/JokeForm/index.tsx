@@ -20,10 +20,7 @@ const JokeForm = () => {
    const new_joke = {
      new_joke: jokeInput.current?.value
    }
-   console.log(new_joke)
-    reqJokeCreation(new_joke).then(res =>{
-      console.log(res)
-    })
+    reqJokeCreation(new_joke)
  }
 
   return(
