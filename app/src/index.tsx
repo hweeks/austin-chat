@@ -1,20 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch, Provider } from "react-redux"
 import ReactDOM from "react-dom";
 import { HomePage } from "./Containers/Home";
+import { fetchJoke } from "./actions";
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import reducers from "./reducers";
 
-const reqJoke = async () => {
-  const in_flight = await fetch("/api/joke/get");
-  const output = await in_flight.json();
-  return output.joke === undefined ? output.message : output.joke
-};
+const WrappedApp = () => {
+  const store = createStore(reducers, applyMiddleware(thunkMiddleware))
+
+  return(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
+
+}
 
 const App = () => {
-  const [joke,setJoke] = useState('')
+  const dispatch = useDispatch()
+  const joke = useSelector(state => state.joke)
+
   useEffect(() => {
-    reqJoke().then((res) => setJoke(res))
+    dispatch(fetchJoke())
   },[])
+
+
  return(
-    <HomePage joke={joke}/>
+    <HomePage joke={joke.dailyJoke || joke.error}/>
  )
 }
 
@@ -23,5 +37,5 @@ const home_node = document.getElementById("home");
 
 // we gotta fetch the joke from the back end instead next!
 window.onload = () => {
-  ReactDOM.render(<App />, home_node);
+  ReactDOM.render(<WrappedApp />, home_node);
 };
