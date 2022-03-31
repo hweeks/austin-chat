@@ -21,7 +21,7 @@ export const add_a_joke = async (
     await joke_model.create({ author: found_author, joke: new_joke });
     res.send({ complete: true });
   } catch (err) {
-    next(err);
+    res.send(err);
   }
 };
 

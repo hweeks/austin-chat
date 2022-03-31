@@ -16,11 +16,22 @@ const reqJokeCreation = async (joke: object) => {
 const JokeForm = () => {
  const jokeInput = useRef()
 
+ const errorHandler = (code: number) => {
+   if(code === 11000){
+     alert("Be original, dont steal jokes... got back to reddit.")
+   }
+ }
+
  const handleJokeCreation = () => {
    const new_joke = {
      new_joke: jokeInput.current?.value
    }
-    reqJokeCreation(new_joke)
+    reqJokeCreation(new_joke).then(res =>{
+      if(res.code) errorHandler(res.code)
+      else {
+        jokeInput.current.value = ""
+      }
+    })
  }
 
   return(
