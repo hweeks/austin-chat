@@ -1,6 +1,6 @@
 import { Router, NextFunction, Response, Request } from "express";
 import jws from "jws";
-import { User, authenticate } from "../models/user";
+import { User, authenticate, tokenAuthentication } from "../models/user";
 
 const router = Router();
 
@@ -26,7 +26,7 @@ export const userLogin = async (
   const { username, password } = req.body;
   try {
     const userFound = await authenticate(username, password);
-    const token = await createToken(userFound?.id || "", userFound.id);
+    const token = await createToken(userFound.password, userFound?.id);
     // this cookie being set is how we will check on later requests
     // are actually authenticated!
     res.cookie("token", token, { signed: true });
@@ -39,6 +39,22 @@ export const userLogin = async (
 
 router.post("/api/user/login", userLogin);
 
+const userVerification = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { token } = req.signedCookies;
+  try {
+    const userFound = await tokenAuthentication(token)
+    res.send(userFound.username)
+  } catch (error) {
+    res.send({error: "Something went wrong!"})
+  }
+}
+
+router.get("/api/user/verifyUser", userVerification)
+
 // allow someone to create a user
 export const createUser = async (
   req: Request,
@@ -48,7 +64,7 @@ export const createUser = async (
   const { username, password } = req.body;
   try {
     const builtUser = await User.create({ username, password });
-    const token = await createToken(builtUser?.id || "", builtUser.id);
+    const token = await createToken(builtUser?.id || "", builtUser.password);
     // this cookie being set is how we will check on later requests
     // are actually authenticated!
     res.cookie("token", token, { signed: true });

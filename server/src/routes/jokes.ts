@@ -1,5 +1,6 @@
 import { Router, NextFunction, Response, Request } from "express";
 import { joke_model } from "../models/joke";
+import { User } from "../models/user";
 import { decodeToken } from "./user";
 
 export const joke_router = Router();
@@ -15,13 +16,13 @@ export const add_a_joke = async (
   if (!token) next(new Error("no token no jokin"));
   const { new_joke } = req.body;
   const token_decode = JSON.parse(decodeToken(token).payload)
-  const found_author = token_decode.user_id;
-  console.log(token_decode)
+  const user_id = token_decode.user_id;
+  const found_user = await User.find({ user_id })
   try {
-    await joke_model.create({ author: found_author, joke: new_joke });
+    await joke_model.create({ author: found_user[0]["_id"], joke: new_joke });
     res.send({ complete: true });
   } catch (err) {
-    res.send(err);
+    res.send({err});
   }
 };
 

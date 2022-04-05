@@ -1,43 +1,35 @@
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { JokeInput, JokeWrapper } from "./styles"
-
-const reqJokeCreation = async (joke: object) => {
-  const in_flight = await fetch("/api/joke/create", {
-    method: 'POST',
-    body: JSON.stringify(joke),
-    headers: {
-      'Content-Type': "application/json"
-    }
-  });
-  const response = await in_flight.json();
-  return response
-}
+import { useDispatch, useSelector } from "react-redux"
+import { addJoke } from "../../actions"
 
 const JokeForm = () => {
  const jokeInput = useRef()
-
- const errorHandler = (code: number) => {
-   if(code === 11000){
-     alert("Be original, dont steal jokes... got back to reddit.")
-   }
- }
+ const dispatch = useDispatch()
+ const joke = useSelector(state => state.joke)
+ const [error,setError] = useState(joke.error)
 
  const handleJokeCreation = () => {
+   const joke = jokeInput.current?.value
    const new_joke = {
-     new_joke: jokeInput.current?.value
+     new_joke: joke
    }
-    reqJokeCreation(new_joke).then(res =>{
-      if(res.code) errorHandler(res.code)
-      else {
-        jokeInput.current.value = ""
-      }
-    })
+   if(joke <= 0) {
+      setError("Please enter a joke.")
+      setTimeout(() => {
+        setError('')
+      }, 6000);
+   }
+   else {
+    dispatch(addJoke(new_joke))
+   }
  }
 
   return(
     <JokeWrapper>
       <JokeInput ref={jokeInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
-      <button onClick={() => handleJokeCreation()}>Submit Joke</button>
+      <button disabled={joke.isLoading} onClick={() => handleJokeCreation()}>{joke.isLoading ? "Sending" : "Submit Joke"}</button>
+      {error && <div>{error}</div>}
     </JokeWrapper>
   )
 }

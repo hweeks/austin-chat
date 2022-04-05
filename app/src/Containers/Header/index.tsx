@@ -11,7 +11,7 @@ const Header = (props: any) => {
   return(
     <HeaderWrapper>
       <LoginOut  {...props}  formShown={showForm} showForm={() => setShowForm(!showForm)}/>
-      {showForm && <UserForm setToken={props.setToken} showForm={() => setShowForm(!showForm)}/>}
+      {showForm && <UserForm showForm={() => setShowForm(!showForm)}/>}
     </HeaderWrapper>
   )
 }
