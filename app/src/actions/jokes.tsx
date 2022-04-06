@@ -56,7 +56,7 @@ export const fetchJoke = () => {
     dispatch(jokeLoading())
     return reqJoke().then(res => {
       console.log(res)
-      if(res.joke) dispatch(setJoke(res.joke))
+      if(res.joke) dispatch(setJoke(res))
       else if(res.error) dispatch(jokeFailed(res.message))
     })
   }

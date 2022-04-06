@@ -13,6 +13,7 @@ export const LoginOutButton = styled.button`
   width: 5%;
   min-width: 60px;
   max-width: 100px;
+  min-height: 75px;
   padding: 1vh;
   justify-self: flex-end;
 `

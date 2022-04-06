@@ -1,6 +1,6 @@
 import { Router, NextFunction, Response, Request } from "express";
 import jws from "jws";
-import { User, authenticate, tokenAuthentication } from "../models/user";
+import { User, authenticate } from "../models/user";
 
 const router = Router();
 
@@ -31,7 +31,7 @@ export const userLogin = async (
     // are actually authenticated!
     res.cookie("token", token, { signed: true });
     // send back the token incase we wanna do something else with it!
-    res.send({ token });
+    res.send({ token, username });
   } catch (error) {
     next(error)
   }
@@ -45,11 +45,15 @@ const userVerification = async (
   next: NextFunction
 ) => {
   const { token } = req.signedCookies;
-  try {
-    const userFound = await tokenAuthentication(token)
-    res.send(userFound.username)
-  } catch (error) {
-    res.send({error: "Something went wrong!"})
+  if(token){
+    const token_decode = JSON.parse(decodeToken(token).payload)
+    const user_id = token_decode.user_id;
+    const foundUser = await User.find({ user_id })
+    try {
+      res.send({username: foundUser[0].username})
+    } catch (error) {
+      res.send({error: "Something went wrong!"})
+    }
   }
 }
 
@@ -68,7 +72,7 @@ export const createUser = async (
     // this cookie being set is how we will check on later requests
     // are actually authenticated!
     res.cookie("token", token, { signed: true });
-    res.send({ token });
+    res.send({ token, username });
   } catch (error) {
     next(error)
   }

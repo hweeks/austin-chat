@@ -4,10 +4,10 @@ import Header from "../Header";
 import JokeForm from "../JokeForm";
 import { useSelector } from "react-redux"
 
-export const HomePage = ({ joke }: { joke: string }) => {
+export const HomePage = ({ joke, author }: { joke: string, author: string}) => {
   const is_joke_funny = joke === "penis";
   const user = useSelector(state => state.user)
-  
+  console.log(joke)
 
   return (
     <SexyContainer>

@@ -38,7 +38,11 @@ const get_a_joke = async (
   const found_joke = await joke_model.findOne().skip(rando_offset).exec()
   if (!found_joke) res.send({error: true, message: 'no jokes, no content'})
   //added a else statement.. was throwing an error in the server console if found joke was null.
-  else res.send({joke: found_joke.joke})
+  else {
+    const user_id = found_joke.author;
+    const found_user = await User.find({ user_id })
+    res.send({joke: found_joke.joke, author: found_user[0].username})
+  }
 }
 
 joke_router.get('/api/joke/get', get_a_joke)

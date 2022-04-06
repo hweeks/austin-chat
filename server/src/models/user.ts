@@ -37,19 +37,6 @@ export const authenticate = async function (
   return foundUser;
 };
 
-export const tokenAuthentication = async function (
-  token: string
-) {
-  const user_id = token
-  const foundUsers = await User.find({ user_id })
-  const [foundUser] = foundUsers;
-  if(!foundUser) {
-    console.log("no user found")
-    throw new Error("Users token does not match a user")
-  }
-  return foundUser
-}
-
 UserSchema.pre("save", function (this: IUserDoc, next) {
   const userModel = this;
   if (!userModel.isModified("password")) {

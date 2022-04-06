@@ -1,13 +1,18 @@
 import { LoginOutButton } from "./styles"
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { logoutUser } from "../../actions"
 
 const LoginOut = (props: any) => {
-  const isLoggedIn = useSelector(state => state.user.isLoggedIn)
+  const isLoggedIn = useSelector(state => state.user.isVerified)
+  const dispatch = useDispatch()
 
   const handleButton = () => {
     if(!isLoggedIn) {
       props.showForm()
+    }
+    else{
+      dispatch(logoutUser())
     }
   }
 

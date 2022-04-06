@@ -1,36 +1,8 @@
 import React, { useRef, useState } from "react";
 import { passwordValidation } from "../../Helpers/password-validation";
 import { UserFormWrapper } from "./styles";
-import qs from "qs"
-
-interface user {
-  username: string,
-  password: string,
-}
-
-const reqUserCreate = async (newUser: user) => {
-  const in_flight = await fetch("/api/user/create", {
-    method: 'POST',
-    body: JSON.stringify(newUser),
-    headers: {
-      'Content-Type': "application/json"
-    }
-  });
-  const output = await in_flight.json();
-  return output
-}
-
-const reqLogin = async (user: user) => {
-  const in_flight = await fetch('/api/user/login', {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: {
-      'Content-type': 'application/json'
-    }
-  })
-  const output = await in_flight.json()
-  return output
-}
+import { useDispatch, useSelector } from "react-redux"
+import { createUser, loginUser } from "../../actions";
 
 const creationErrorHandler = (res: any) => {
   if(res.code === 11000){
@@ -39,29 +11,29 @@ const creationErrorHandler = (res: any) => {
   }
 }
 
+interface user {
+  username: string,
+  password: string,
+}
+
 const loginErrorHandler = (res: any) => {
   //needing assistance here
 }
 
 const UserForm = (props: any) => {
-  
   const [newAccount, setNewAccount] = useState(false)
   const usernameInput = useRef()
   const passwordInput = useRef()
   const passwordCheckInput = useRef()
   const [errorMessage,setError] = useState('')
+  const dispatch = useDispatch()
+  const isVerified = useSelector(state => state.user.isVerified)
 
   const handleCreate = (userInfo: user, passwordCheck: string) => {
     const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
     if(checkForErrors.length <= 0){
-      reqUserCreate(userInfo).then(res => {
-        if(!res.token) creationErrorHandler(res)
-        else {
-          props.showForm()
-          props.setToken(qs.parse(document.cookie).token)
-        }
-        
-      })
+      dispatch(createUser(userInfo))
+      props.showForm()
     }
     else if(checkForErrors){
       setError(`The password ${checkForErrors.join(" & ")}.`)
@@ -69,13 +41,8 @@ const UserForm = (props: any) => {
   }
 
   const handleLogin = (userInfo: user) => {
-    reqLogin(userInfo).then(res => {
-      if(!res.token) loginErrorHandler(res)
-      else {
-        props.showForm()
-        props.setToken(qs.parse(document.cookie).token)
-      }
-    })
+    dispatch(loginUser(userInfo))
+    props.showForm()
   }
 
   const handleSubmit = (event: any) => {

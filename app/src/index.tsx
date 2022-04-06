@@ -9,6 +9,9 @@ import reducers from "./reducers";
 
 const WrappedApp = () => {
   const store = createStore(reducers, applyMiddleware(thunkMiddleware))
+  store.subscribe(() => {
+    console.log("current state", store.getState())
+  })
 
   return(
     <Provider store={store}>
@@ -16,23 +19,6 @@ const WrappedApp = () => {
     </Provider>
   )
 
-}
-
-const deleteAllCookies = () => {
-  let cookies = document.cookie.split(";");
-
-  for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      let eqPos = cookie.indexOf("=");
-      let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
-}
-
-const reqVerification = async () => {
-  const in_flight = await fetch("/api/user/verifyUser")
-  const response = await in_flight.json()
-  return response
 }
 
 const App = () => {
@@ -43,10 +29,11 @@ const App = () => {
     dispatch(userVerification())
     dispatch(fetchJoke())
   },[])
+  console.log(joke)
 
   
  return(
-    <HomePage joke={joke.dailyJoke || joke.error}/>
+    <HomePage joke={joke.dailyJoke.joke || joke.error} author={joke.dailyJoke.author}/>
  )
 }
 
