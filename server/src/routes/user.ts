@@ -48,7 +48,7 @@ export const userLogout = async (
   res.send({success:true});
 };
 
-router.post("/api/user/logot", userLogin);
+router.post("/api/user/logot", userLogout);
 
 // allow someone to create a user
 export const createUser = async (
