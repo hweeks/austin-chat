@@ -38,6 +38,18 @@ export const userLogin = async (
 
 router.post("/api/user/login", userLogin);
 
+// allow a user to logout
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.clearCookie("token");
+  res.send({success:true});
+};
+
+router.post("/api/user/logot", userLogin);
+
 // allow someone to create a user
 export const createUser = async (
   req: Request,
