@@ -43,10 +43,11 @@ export const addJoke = (joke: object) => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqCreateJoke(joke).then(res => {
+      console.log(res)
       dispatch(createJoke())
     })
     .catch(err => {
-      
+      console.log(err)
     })
   }
 }
@@ -57,7 +58,7 @@ export const fetchJoke = () => {
     return reqJoke().then(res => {
       console.log(res)
       if(res.joke) dispatch(setJoke(res))
-      else if(res.error) dispatch(jokeFailed(res.message))
+      else dispatch(jokeFailed(res.message))
     })
   }
 }

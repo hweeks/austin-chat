@@ -1,16 +1,19 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { JokeInput, JokeWrapper, SubmitButton } from "./styles"
 import { useDispatch, useSelector } from "react-redux"
 import { addJoke } from "../../actions"
 
 const JokeForm = () => {
- const jokeInput = useRef()
+ const [jokeInput,setJoke] = useState("")
  const dispatch = useDispatch()
  const joke = useSelector(state => state.joke)
  const [error,setError] = useState(joke.error)
 
+ const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
+   const inputValue = event.currentTarget.value
+ }
+
  const handleJokeCreation = () => {
-   const joke = jokeInput.current?.value
    const new_joke = {
      new_joke: joke
    }
@@ -27,7 +30,7 @@ const JokeForm = () => {
 
   return(
     <JokeWrapper>
-      <JokeInput ref={jokeInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
+      <JokeInput onChange={handleInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
       <SubmitButton disabled={joke.isLoading} onClick={() => handleJokeCreation()}>{joke.isLoading ? "Sending" : "Submit Joke"}</SubmitButton>
       {error && <div>{error}</div>}
     </JokeWrapper>

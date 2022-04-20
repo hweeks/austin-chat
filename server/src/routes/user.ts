@@ -57,6 +57,17 @@ const userVerification = async (
   }
 }
 
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.clearCookie("token");
+  res.send({success:true});
+};
+
+router.post("/api/user/logout", userLogin);
+
 router.get("/api/user/verifyUser", userVerification)
 
 // allow someone to create a user

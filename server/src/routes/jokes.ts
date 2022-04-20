@@ -22,7 +22,7 @@ export const add_a_joke = async (
     await joke_model.create({ author: found_user[0]["_id"], joke: new_joke });
     res.send({ complete: true });
   } catch (err) {
-    res.send({err});
+    next(err);
   }
 };
 
@@ -32,17 +32,33 @@ joke_router.post("/api/joke/create", add_a_joke);
 const get_a_joke = async (
   req: Request,
   res: Response,
+  next: NextFunction
 ) => {
-  const joke_count = await joke_model.count()
-  const rando_offset = Math.floor(Math.random() * joke_count)
-  const found_joke = await joke_model.findOne().skip(rando_offset).exec()
-  if (!found_joke) res.send({error: true, message: 'no jokes, no content'})
-  //added a else statement.. was throwing an error in the server console if found joke was null.
-  else {
-    const user_id = found_joke.author;
-    const found_user = await User.find({ user_id })
-    res.send({joke: found_joke.joke, author: found_user[0].username})
+  try {
+    const joke_count = await joke_model.count()
+    const rando_offset = Math.floor(Math.random() * joke_count)
+    const found_joke = await joke_model.findOne().skip(rando_offset).exec()
+    if (!found_joke) throw new Error('no jokes, no content')
+    else {
+      const user_id = found_joke.author;
+      const found_user = await User.find({ user_id })
+      res.send({joke: found_joke.joke, author: found_user[0].username})
+    } 
+  } catch (error) {
+    next(error)
   }
 }
 
 joke_router.get('/api/joke/get', get_a_joke)
+
+const handle_error = async (
+  error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(error.type)
+  res.send(error)
+}
+
+joke_router.use("/api/joke/",handle_error)
