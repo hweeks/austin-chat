@@ -3,7 +3,7 @@ import { SET_JOKE, FAILED_JOKE, LOADING_JOKE, ADD_JOKE} from "../actions"
 interface stateObject {
   dailyJoke: object,
   isLoading: boolean,
-  error: any,
+  error: string,
 }
 
 const initialState : stateObject = {
