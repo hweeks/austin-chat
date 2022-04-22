@@ -16,21 +16,24 @@ interface user {
   password: string,
 }
 
+interface userInfoInt {
+  username: string,
+  password: string,
+  passCheck: string
+}
+
 const loginErrorHandler = (res: any) => {
   //needing assistance here
 }
 
 const UserForm = (props: any) => {
   const [newAccount, setNewAccount] = useState(false)
-  const usernameInput = useRef()
-  const passwordInput = useRef()
-  const passwordCheckInput = useRef()
+  const [userInfo, setUserInfo] = useState<userInfoInt>({})
   const [errorMessage,setError] = useState('')
   const dispatch = useDispatch()
-  const isVerified = useSelector(state => state.user.isVerified)
 
-  const handleCreate = (userInfo: user, passwordCheck: string) => {
-    const checkForErrors = passwordValidation(userInfo.password ,passwordCheck)
+  const handleCreate = () => {
+    const checkForErrors = passwordValidation(userInfo.password ,userInfo.passCheck)
     if(checkForErrors.length <= 0){
       dispatch(createUser(userInfo))
       props.showForm()
@@ -45,29 +48,34 @@ const UserForm = (props: any) => {
     props.showForm()
   }
 
-  const handleSubmit = (event: any) => {
+  const handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {name, value} = event.target
+    setUserInfo({
+      ...userInfo,
+      [name]: value
+    })
+  }
+
+  const handleSubmit = (event: Event) => {
     event.preventDefault()
-    const password = passwordInput.current?.value
-    const passwordCheck = passwordCheckInput.current?.value
-    const username = usernameInput.current?.value
-    const userInfo : user = {
-      username,
-      password
+    const user : user = {
+      username: userInfo.username,
+      password: userInfo.password
     }
-    if(newAccount) handleCreate(userInfo,passwordCheck)
-    else handleLogin(userInfo)
+    if(newAccount) handleCreate()
+    else handleLogin(user)
   }
 
   return (
     <UserFormWrapper onSubmit={handleSubmit}>
       Username
-      <input ref={usernameInput} placeholder="Username" required/>
+      <input onChange={handleInputChange} name="username" placeholder="Username" required/>
       Password
-      <input ref={passwordInput} type="password" placeholder="Password" required/>
+      <input onChange={handleInputChange} name="password" type="password" placeholder="Password" required/>
       {newAccount &&  
         <>
           Re-Enter Password
-          <input ref={passwordCheckInput}  placeholder="Re-Enter Password" required/>
+          <input onChange={handleInputChange} name="passCheck"  placeholder="Re-Enter Password" required/>
         </>}
       <div>
       <label>{errorMessage}</label>

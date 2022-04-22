@@ -52,12 +52,11 @@ const get_a_joke = async (
 joke_router.get('/api/joke/get', get_a_joke)
 
 const handle_error = async (
-  error,
+  error: Error,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log(error.type)
   res.send(error)
 }
 

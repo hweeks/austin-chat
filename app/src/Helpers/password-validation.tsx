@@ -19,6 +19,7 @@ const passwordHasNumbers = (password: string, password2?: string) => {
 }
 
 const passwordsMatch = (password: string, password2: string) => {
+  console.log(password + password2)
   if(password !== password2){
     errors.push('does not match')
   }
