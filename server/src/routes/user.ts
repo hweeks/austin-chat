@@ -62,11 +62,13 @@ export const userLogout = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.signedCookies)
   res.clearCookie("token");
+  console.log(req.signedCookies)
   res.send({success:true});
 };
 
-router.post("/api/user/logout", userLogin);
+router.get("/api/user/logout", userLogout);
 
 router.get("/api/user/verifyUser", userVerification)
 

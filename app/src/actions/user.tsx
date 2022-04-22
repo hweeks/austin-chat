@@ -61,17 +61,9 @@ const reqLogin = async (user: user) => {
   return output
 }
 
-const deleteAllCookies = () => {
-  let cookies = document.cookie.split(";");
-
-  for (let i = 0; i < cookies.length; i++) {
-      let cookie = cookies[i];
-      let eqPos = cookie.indexOf("=");
-      let name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-  }
+const reqLogout = async () => {
+  return (await fetch('/api/user/logout'))
 }
-
 
 const reqVerification = async () => {
   const req = await fetch("/api/user/verifyUser")
@@ -105,8 +97,10 @@ export const loginUser = (user: user) => {
 
 export const logoutUser = () => {
   return (dispatch) => {
-    deleteAllCookies()
-    return dispatch(logout())
+    return reqLogout().then(res => {
+      dispatch(logout())
+      // else alert("Error occured when logging out.")
+    })
   }
 }
 
