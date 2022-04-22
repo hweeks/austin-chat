@@ -10,14 +10,14 @@ const JokeForm = () => {
  const [error,setError] = useState(joke.error)
 
  const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
-   const inputValue = event.currentTarget.value
+   setJoke(event.currentTarget.value)
  }
 
  const handleJokeCreation = () => {
    const new_joke = {
-     new_joke: joke
+     new_joke: jokeInput
    }
-   if(joke <= 0) {
+   if(jokeInput <= 0) {
       setError("Please enter a joke.")
       setTimeout(() => {
         setError('')
