@@ -13,7 +13,6 @@ export const add_a_joke = async (
   next: NextFunction
 ) => {
   const { token } = req.signedCookies;
-  if (!token) next(new Error("no token no jokin"));
   const { new_joke } = req.body;
   const token_decode = JSON.parse(decodeToken(token).payload)
   const user_id = token_decode.user_id;
@@ -38,7 +37,11 @@ const get_a_joke = async (
     const joke_count = await joke_model.count()
     const rando_offset = Math.floor(Math.random() * joke_count)
     const found_joke = await joke_model.findOne().skip(rando_offset).exec()
-    if (!found_joke) throw new Error('no jokes, no content')
+    if (!found_joke) {
+      const error = new Error('no jokes, no content')
+      error.name = "no jokes"
+      throw error
+    }
     else {
       const user_id = found_joke.author;
       const found_user = await User.find({ user_id })
@@ -57,7 +60,8 @@ const handle_error = async (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(404).send({success: false})
+  if(error.code === 11000) res.status(400).send({success: false, message: "Duplicate Joke"})
+  if(error.name === "no jokes") res.status(404).send({success: false, message: error.message})
 }
 
 joke_router.use("/api/joke/",handle_error)

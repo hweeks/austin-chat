@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { passwordValidation } from "../../Helpers/password-validation";
 import { UserFormWrapper } from "./styles";
 import { useDispatch, useSelector } from "react-redux"
-import { createUser, loginUser } from "../../actions";
+import { createUser, loginUser, toggleForm } from "../../actions";
 
 const creationErrorHandler = (res: any) => {
   if(res.code === 11000){
@@ -22,21 +22,17 @@ interface userInfoInt {
   passCheck: string
 }
 
-const loginErrorHandler = (res: any) => {
-  //needing assistance here
-}
-
 const UserForm = (props: any) => {
   const [newAccount, setNewAccount] = useState(false)
   const [userInfo, setUserInfo] = useState<userInfoInt>({})
   const [errorMessage,setError] = useState('')
+  const error = useSelector(state => state.user.error)
   const dispatch = useDispatch()
 
   const handleCreate = () => {
     const checkForErrors = passwordValidation(userInfo.password ,userInfo.passCheck)
     if(checkForErrors.length <= 0){
       dispatch(createUser(userInfo))
-      props.showForm()
     }
     else if(checkForErrors){
       setError(`The password ${checkForErrors.join(" & ")}.`)
@@ -45,7 +41,6 @@ const UserForm = (props: any) => {
 
   const handleLogin = (userInfo: user) => {
     dispatch(loginUser(userInfo))
-    props.showForm()
   }
 
   const handleInputChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -78,10 +73,10 @@ const UserForm = (props: any) => {
           <input onChange={handleInputChange} name="passCheck"  placeholder="Re-Enter Password" required/>
         </>}
       <div>
-      <label>{errorMessage}</label>
+      <label>{errorMessage || error}</label>
       </div>
       <button type="submit">{newAccount ? "Create" : "Login"}</button>
-      <button type="button" onClick={props.showForm}>Back</button>
+      <button type="button" onClick={() => dispatch(toggleForm())}>Back</button>
       <button type="button" onClick={() => setNewAccount(!newAccount)}>{newAccount ? "Already Have an Account?" : "New User?"}</button>
     </UserFormWrapper>
   )

@@ -1,19 +1,20 @@
 import React,{ useState } from "react"
-import LoginOut from "../Login-Logout"
+import Login from "../Login"
+import Logout from "../Logout"
 import UserForm from "../UserForm"
 import { HeaderWrapper, UsernameH2 } from "./styles"
 import { useSelector } from "react-redux"
 
-const Header = (props: any) => {
-  const user = useSelector(state => state.user.username)
-  const [showForm,setShowForm] = useState(false)
+const Header = () => {
+  const user = useSelector(state => state.user)
 
 
   return(
     <HeaderWrapper>
-      <UsernameH2>{user}</UsernameH2>
-      <LoginOut  {...props}  formShown={showForm} showForm={() => setShowForm(!showForm)}/>
-      {showForm && <UserForm showForm={() => setShowForm(!showForm)}/>}
+      <UsernameH2>{user.username}</UsernameH2>
+      {user.isVerified && <Logout/>}
+      {!user.isVerified && !user.formShown && <Login/>}
+      {user.formShown && <UserForm />}
     </HeaderWrapper>
   )
 }

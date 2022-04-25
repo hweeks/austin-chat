@@ -25,7 +25,8 @@ const createJoke = () => ({
 
 export const reqJoke = async () => {
   const jokeReq = await fetch('/api/joke/get')
-  const jokeRes = await jokeReq.status === 404 ? jokeReq : jokeReq.json()
+  console.log(jokeReq)
+  const jokeRes = await jokeReq.json()
   return jokeRes
 } 
 
@@ -45,11 +46,8 @@ export const addJoke = (joke: object) => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqCreateJoke(joke).then(res => {
-      console.log(res)
-      dispatch(createJoke())
-    })
-    .catch(err => {
-      console.log(err)
+      if(res.complete) dispatch(createJoke())
+      else if(!res.success) dispatch(jokeFailed(res.message))
     })
   }
 }
@@ -58,8 +56,9 @@ export const fetchJoke = () => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqJoke().then(res => {
+      console.log(res.message)
       if(res.joke) dispatch(setJoke(res))
-      else if(res.status === 404) dispatch(jokeFailed("No Jokes, No Content"))
+      if(!res.success) dispatch(jokeFailed(res.message))
     })
   }
 }

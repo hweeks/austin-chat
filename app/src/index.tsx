@@ -29,11 +29,9 @@ const App = () => {
     dispatch(userVerification())
     dispatch(fetchJoke())
   },[])
-  console.log(joke)
 
-  
  return(
-    <HomePage joke={joke.dailyJoke.joke || joke.error} author={joke.dailyJoke.author}/>
+    <HomePage joke={joke.isLoading ? "Loading" : (joke.dailyJoke.joke || joke.error)} author={joke.dailyJoke.author}/>
  )
 }
 

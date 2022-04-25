@@ -25,14 +25,17 @@ const JokeForm = () => {
    }
    else {
     dispatch(addJoke(new_joke))
+    if(!joke.error){
+      setJoke("")
+    }
    }
  }
 
   return(
     <JokeWrapper>
-      <JokeInput onChange={handleInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
+      <JokeInput onChange={handleInput} value={jokeInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
       <SubmitButton disabled={joke.isLoading} onClick={() => handleJokeCreation()}>{joke.isLoading ? "Sending" : "Submit Joke"}</SubmitButton>
-      {error && <div>{error}</div>}
+      <div>{joke.error}</div>
     </JokeWrapper>
   )
 }

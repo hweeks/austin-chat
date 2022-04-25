@@ -26,6 +26,7 @@ export const userLogin = async (
   const { username, password } = req.body;
   try {
     const userFound = await authenticate(username, password);
+    if(userFound.failed) throw new Error(userFound.message)
     const token = await createToken(userFound.password, userFound?.id);
     // this cookie being set is how we will check on later requests
     // are actually authenticated!
@@ -62,9 +63,7 @@ export const userLogout = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.signedCookies)
   res.clearCookie("token");
-  console.log(req.signedCookies)
   res.send({success:true});
 };
 
@@ -87,10 +86,23 @@ export const createUser = async (
     res.cookie("token", token, { signed: true });
     res.send({ token, username });
   } catch (error) {
+    error.message = "Username is already in use."
     next(error)
   }
 };
 
 router.post("/api/user/create", createUser);
+
+const handle_error = async (
+  error,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log(error)
+  res.send({message: error.message})
+}
+
+router.use("/api/user/", handle_error)
 
 export const UserRouter = router;

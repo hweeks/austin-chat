@@ -4,6 +4,7 @@ export const USER_NOT_VERIFIED = "USER_NOT_VERIFIED"
 export const USER_FAILED = "USER_FAILED"
 export const LOGIN_FAILED = "LOGIN_FAILED"
 export const LOGOUT_USER = "LOGOUT_USER"
+export const SHOW_FORM = "SHOW_FORM"
 
 const verifyUser = () => ({
   type: VERIFYING_USER
@@ -30,6 +31,10 @@ const loginFailed = (payload: string) => ({
 
 const logout = () => ({
   type: LOGOUT_USER
+})
+
+const formToggle = () => ({
+  type: SHOW_FORM
 })
 
 interface user {
@@ -75,10 +80,11 @@ export const createUser = (newUser: user) => {
   return (dispatch) => {
     dispatch(verifyUser())
     return reqUserCreate(newUser).then(res => {
-      if(res.username) dispatch(userVerified(res.username))
-      else{
-        dispatch(createFailed(res.error))
+      if(res.username) {
+        dispatch(userVerified(res.username))
+        dispatch(formToggle())
       }
+      else if(res.message) dispatch(createFailed(res.message))
     })
   }
 }
@@ -87,9 +93,12 @@ export const loginUser = (user: user) => {
   return (dispatch) => {
     dispatch(verifyUser())
     return reqLogin(user).then(res => {
-      if(res.username) dispatch(userVerified(res.username))
+      if(res.username) {
+        dispatch(userVerified(res.username))
+        dispatch(formToggle())
+      }
       else{
-        dispatch(loginFailed(res.error))
+        dispatch(loginFailed(res.message))
       }
     })
   }
@@ -106,7 +115,7 @@ export const logoutUser = () => {
 
 export const userVerification = () => {
   return (dispatch) => {
-    dispatch(verifyUser)
+    dispatch(verifyUser())
     return reqVerification().then(res => {
       if(res.username) dispatch(userVerified(res.username))
       else {
@@ -116,3 +125,8 @@ export const userVerification = () => {
   }
 }
 
+export const toggleForm = () => {
+  return (dispatch) => {
+    dispatch(formToggle())
+  }
+}

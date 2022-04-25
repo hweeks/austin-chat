@@ -7,7 +7,6 @@ import { useSelector } from "react-redux"
 export const HomePage = ({ joke, author }: { joke: string, author: string}) => {
   const is_joke_funny = joke === "penis";
   const user = useSelector(state => state.user)
-  console.log(joke)
 
   return (
     <SexyContainer>
@@ -15,6 +14,7 @@ export const HomePage = ({ joke, author }: { joke: string, author: string}) => {
       {user.isVerified && <JokeForm/>}
       {!is_joke_funny && <BeautifulText>{joke}</BeautifulText>}
       {is_joke_funny && <BeautifulText>grow up</BeautifulText>}
+      {author && <h1>By {author.toUpperCase()}</h1>}
     </SexyContainer>
   );
 };
