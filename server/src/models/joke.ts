@@ -1,12 +1,12 @@
 import { Document, Schema, Model, model, Types } from "mongoose";
 
 export type joke_raw = {
-  author: Types.ObjectId;
+  user_id: Types.ObjectId;
   joke: string;
 };
 
 export const joke_schema = new Schema({
-  author: {
+  user_id: {
     type: Types.ObjectId,
     ref: "User",
     required: true,

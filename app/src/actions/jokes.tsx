@@ -1,5 +1,3 @@
-import joke from "../reducers/joke";
-
 export const SET_JOKE = "SET_JOKE";
 export const ADD_JOKE = "ADD_JOKE";
 export const FAILED_JOKE = "FAILED_JOKE";
@@ -25,7 +23,6 @@ const createJoke = () => ({
 
 export const reqJoke = async () => {
   const jokeReq = await fetch('/api/joke/get')
-  console.log(jokeReq)
   const jokeRes = await jokeReq.json()
   return jokeRes
 } 
@@ -56,7 +53,7 @@ export const fetchJoke = () => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqJoke().then(res => {
-      console.log(res.message)
+      console.log(res)
       if(res.joke) dispatch(setJoke(res))
       if(!res.success) dispatch(jokeFailed(res.message))
     })

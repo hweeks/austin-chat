@@ -16,9 +16,9 @@ export const add_a_joke = async (
   const { new_joke } = req.body;
   const token_decode = JSON.parse(decodeToken(token).payload)
   const user_id = token_decode.user_id;
-  const found_user = await User.find({ user_id })
+  const found_user = await User.findOne({ user_id })
   try {
-    await joke_model.create({ author: found_user[0]["_id"], joke: new_joke });
+    await joke_model.create({ user_id: found_user["_id"], joke: new_joke });
     res.send({ complete: true });
   } catch (err) {
     next(err);
@@ -43,9 +43,9 @@ const get_a_joke = async (
       throw error
     }
     else {
-      const user_id = found_joke.author;
-      const found_user = await User.find({ user_id })
-      res.send({joke: found_joke.joke, author: found_user[0].username})
+      const user_id = found_joke.user_id;
+      const found_user = await User.findOne({ user_id })
+      res.send({joke: found_joke.joke, author: found_user.username})
     } 
   } catch (error) {
     next(error)

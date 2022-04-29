@@ -22,7 +22,7 @@ interface userInfoInt {
   passCheck: string
 }
 
-const UserForm = (props: any) => {
+const UserForm = () => {
   const [newAccount, setNewAccount] = useState(false)
   const [userInfo, setUserInfo] = useState<userInfoInt>({})
   const [errorMessage,setError] = useState('')

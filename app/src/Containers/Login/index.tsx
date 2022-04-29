@@ -6,7 +6,6 @@ import { toggleForm } from "../../actions"
 const LoginOut = () => {
   const dispatch = useDispatch()
   const formShown = useSelector(state => state.user.formShown)
-  console.log(formShown)
   return(
     <>
       {!formShown && <Login onClick={() => dispatch(toggleForm())}>Log In</Login>}
