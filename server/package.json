@@ -7,7 +7,6 @@
     "cookie-parser": "^1.4.6",
     "express": "^4.17.3",
     "graceful": "^1.0.2",
-    "helmet": "^5.0.2",
     "jws": "^4.0.0",
     "mongodb": "^4.4.0",
     "mongodb-memory-server": "^8.4.0",

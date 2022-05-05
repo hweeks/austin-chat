@@ -10513,7 +10513,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.9.0"],\
             ["express", "npm:4.17.3"],\
             ["graceful", "npm:1.0.2"],\
-            ["helmet", "npm:5.0.2"],\
             ["jws", "npm:4.0.0"],\
             ["mongodb", "npm:4.4.0"],\
             ["mongodb-memory-server", "npm:8.4.0"],\
