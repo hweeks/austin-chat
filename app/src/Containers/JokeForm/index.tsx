@@ -13,28 +13,18 @@ const JokeForm = () => {
    setJoke(event.currentTarget.value)
  }
 
- const handleJokeCreation = () => {
-   const new_joke = {
-     new_joke: jokeInput
+ const handleJokeCreation = (joke: string) => {
+   if(!jokeInput){
+     setError("Please enter a joke")
+     return setTimeout(() => setError(""),6000)
    }
-   if(jokeInput <= 0) {
-      setError("Please enter a joke.")
-      setTimeout(() => {
-        setError('')
-      }, 6000);
-   }
-   else {
-    dispatch(addJoke(new_joke))
-    if(!joke.error){
-      setJoke("")
-    }
-   }
+   return dispatch(addJoke(joke))
  }
 
   return(
     <JokeWrapper>
       <JokeInput onChange={handleInput} value={jokeInput} rows="3" cols="50" type="text" placeholder={`Put your "Original" joke here.`}/>
-      <SubmitButton disabled={joke.isLoading} onClick={() => handleJokeCreation()}>{joke.isLoading ? "Sending" : "Submit Joke"}</SubmitButton>
+      <SubmitButton disabled={joke.isLoading} onClick={() => handleJokeCreation(jokeInput)}>{joke.isLoading ? "Sending" : "Submit Joke"}</SubmitButton>
       <div>{joke.error}</div>
     </JokeWrapper>
   )

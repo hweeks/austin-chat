@@ -13,12 +13,12 @@ export const add_a_joke = async (
   next: NextFunction
 ) => {
   const { token } = req.signedCookies;
-  const { new_joke } = req.body;
+  const { joke } = req.body;
   const token_decode = JSON.parse(decodeToken(token).payload)
   const user_id = token_decode.user_id;
   const found_user = await User.findOne({ user_id })
   try {
-    await joke_model.create({ user_id: found_user["_id"], joke: new_joke });
+    await joke_model.create({ user_id: found_user["_id"], joke });
     res.send({ complete: true });
   } catch (err) {
     next(err);
