@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { BeautifulText, SexyContainer } from "./styles";
+import Header from "../Header";
+import JokeForm from "../JokeForm";
+import { useSelector } from "react-redux"
 
-const req = async () => {
-  const in_flight = await fetch("/api/joke/get");
-  const output = await in_flight.json();
-  return output.joke;
-};
-
-export const HomePage = ({ joke }: { joke: string }) => {
+export const HomePage = ({ joke, author }: { joke: string, author: string}) => {
   const is_joke_funny = joke === "penis";
-  const [joke_remote, set_joke] = useState("");
-  debugger;
-  if (joke_remote === "") req().then((res) => set_joke(res));
+  const user = useSelector(state => state.user)
+
   return (
     <SexyContainer>
-      {!is_joke_funny && <BeautifulText>{joke_remote}</BeautifulText>}
+      <Header />
+      {user.isVerified && <JokeForm/>}
+      {!is_joke_funny && <BeautifulText>{joke}</BeautifulText>}
       {is_joke_funny && <BeautifulText>grow up</BeautifulText>}
+      {author && <h1>By {author.toUpperCase()}</h1>}
     </SexyContainer>
   );
 };

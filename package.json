@@ -23,5 +23,9 @@
     "lint": "yarn workspaces foreach -piv run lint",
     "fix-lint": "yarn workspaces foreach -piv run fix-lint",
     "ci": "yarn am-i-pretty && yarn lint"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "styled-components": "^5.3.3"
   }
 }
