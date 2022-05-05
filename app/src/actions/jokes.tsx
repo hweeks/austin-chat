@@ -1,3 +1,4 @@
+import {get_server_url} from "../helpers"
 export const SET_JOKE = "SET_JOKE";
 export const ADD_JOKE = "ADD_JOKE";
 export const FAILED_JOKE = "FAILED_JOKE";
@@ -22,13 +23,13 @@ const createJoke = () => ({
 })
 
 export const reqJoke = async () => {
-  const jokeReq = await fetch('/api/joke/get')
+  const jokeReq = await fetch(get_server_url("/api/joke/get"))
   const jokeRes = await jokeReq.json()
   return jokeRes
 } 
 
 const reqCreateJoke = async (joke: object) => {
-  const req = await fetch('/api/joke/create',{
+  const req = await fetch(get_server_url('/api/joke/create'),{
     body: JSON.stringify(joke),
     method: "POST",
     headers: {

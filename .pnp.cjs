@@ -2242,6 +2242,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "npm:4.0.0"\
       ],\
       [\
+        "process",\
+        "npm:0.11.10"\
+      ],\
+      [\
         "process-nextick-args",\
         "npm:2.0.1"\
       ],\
@@ -4610,6 +4614,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["esbuild-register", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:3.3.2"],\
             ["html-webpack-plugin", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:5.5.0"],\
             ["immer", "npm:9.0.12"],\
+            ["process", "npm:0.11.10"],\
             ["qs", "npm:6.10.3"],\
             ["react", "npm:17.0.2"],\
             ["react-dom", "virtual:e75651e5332acab272a999511ceb1d590bce71b23805da845e95013f64713cb0d6d5ff642e55e6f52cfffa4aa82d52a8d58226a538b5d6f9574fab8068ba54d2#npm:17.0.2"],\
@@ -9702,6 +9707,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pretty-error", "npm:4.0.0"],\
             ["lodash", "npm:4.17.21"],\
             ["renderkid", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["process", [\
+        ["npm:0.11.10", {\
+          "packageLocation": "./.yarn/cache/process-npm-0.11.10-aeb3b641ae-bfcce49814.zip/node_modules/process/",\
+          "packageDependencies": [\
+            ["process", "npm:0.11.10"]\
           ],\
           "linkType": "HARD"\
         }]\
