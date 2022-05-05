@@ -1,3 +1,4 @@
+import {get_server_url} from "../helpers"
 export const VERIFYING_USER = "VERIFYING_USER"
 export const USER_VERIFIED = "USER_VERIFIED"
 export const USER_NOT_VERIFIED = "USER_NOT_VERIFIED"
@@ -43,7 +44,7 @@ interface user {
 }
 
 const reqUserCreate = async (newUser: user) => {
-  const in_flight = await fetch("/api/user/create", {
+  const in_flight = await fetch(get_server_url("/api/user/create"), {
     method: 'POST',
     body: JSON.stringify(newUser),
     headers: {
@@ -55,7 +56,7 @@ const reqUserCreate = async (newUser: user) => {
 }
 
 const reqLogin = async (user: user) => {
-  const in_flight = await fetch('/api/user/login', {
+  const in_flight = await fetch(get_server_url('/api/user/login'), {
     method: 'POST',
     body: JSON.stringify(user),
     headers: {
@@ -67,11 +68,11 @@ const reqLogin = async (user: user) => {
 }
 
 const reqLogout = async () => {
-  return (await fetch('/api/user/logout'))
+  return (await fetch(get_server_url('/api/user/logout')))
 }
 
 const reqVerification = async () => {
-  const req = await fetch("/api/user/verifyUser")
+  const req = await fetch(get_server_url("/api/user/verifyUser"))
   const res = await req.json()
   return res
 }

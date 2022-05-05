@@ -2,6 +2,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const webpack = require("webpack");
 
+const get_server_url = () => {
+  if (process.env.GITPOD_WORKSPACE_URL) {
+    return process.env.GITPOD_WORKSPACE_URL.replace("https://", "https://3005-")
+  }
+  return "http://localhost:3005"
+}
+
 module.exports = {
   mode: process.env.NODE_ENV === "production" ? "production" : "development",
   entry: {
@@ -30,10 +37,7 @@ module.exports = {
   devServer: {
     port: 3000,
     host: "0.0.0.0",
-    proxy: {
-      "/api": "http://localhost:3005",
-      changeOrigin: true,
-    },
+    allowedHosts: 'all',
   },
   plugins: [
     new HtmlWebpackPlugin({
