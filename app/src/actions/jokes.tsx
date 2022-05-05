@@ -27,9 +27,12 @@ export const reqJoke = async () => {
   return jokeRes
 } 
 
-const reqCreateJoke = async (joke: object) => {
+const reqCreateJoke = async (joke: string) => {
+  const new_joke = {
+    joke
+  }
   const req = await fetch('/api/joke/create',{
-    body: JSON.stringify(joke),
+    body: JSON.stringify(new_joke),
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -39,7 +42,7 @@ const reqCreateJoke = async (joke: object) => {
   return response
 }
 
-export const addJoke = (joke: object) => {
+export const addJoke = (joke: string) => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqCreateJoke(joke).then(res => {
@@ -53,7 +56,6 @@ export const fetchJoke = () => {
   return (dispatch) => {
     dispatch(jokeLoading())
     return reqJoke().then(res => {
-      console.log(res)
       if(res.joke) dispatch(setJoke(res))
       if(!res.success) dispatch(jokeFailed(res.message))
     })
