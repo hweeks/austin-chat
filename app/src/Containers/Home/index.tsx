@@ -11,6 +11,7 @@ export const HomePage = ({ joke, author }: { joke: string, author: string}) => {
   return (
     <SexyContainer>
       <Header />
+      <h1>lol</h1>
       {user.isVerified && <JokeForm/>}
       {!is_joke_funny && <BeautifulText>{joke}</BeautifulText>}
       {is_joke_funny && <BeautifulText>grow up</BeautifulText>}
